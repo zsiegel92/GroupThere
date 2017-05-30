@@ -1,13 +1,12 @@
 function [dist_mat_rowcol, coordrowcol] = distmat_onerow_onecol(locNames,index)
-%locNames = {'Rochester, NY','New York, NY','Boston, MA','Philadelphia, PA','Pittsburg, PA','Chicago, IL','Durham, NC','Long Beach, CA','Torrance, CA','Omaha, NB','Dallas, TX', 'Denver, CO'};
 
 nloc = length(locNames);
 
 %Querying Google API
 % Querying Google Maps
-%Google Maps API Credential: AIzaSyDDKHV64CvECHE8wf_KXpLiWr2fM0XAnrU
+%Google Maps API Credential:
 
-APIkey='AIzaSyDn-zSmuif-Mf8z16Pm1MLYp41zYcFoaX0';
+APIkey=<PUT YOUR DISTANCE MATRIX API KEY HERE>;
 pre_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?';
 
 
@@ -22,28 +21,27 @@ singleString = strrep(locNames{index},' ','+');
 for k = 1:ceil(length(locNames)/10)
     mink = 10*(k-1)+1;
     limk = min(10*k,length(locNames));
-    
+
     locStringk = strrep(strjoin(locNames(mink:limk),'|'),' ','+');
-    
+
     rowurl = [pre_url,'origins=',singleString,'&','destinations=',locStringk,'&key=',APIkey];
     colurl = [pre_url,'origins=',locStringk,'&','destinations=',singleString,'&key=',APIkey];
-    %url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=nottingham&destinations=london|manchester|liverpool&key=AIzaSyDDKHV64CvECHE8wf_KXpLiWr2fM0XAnrU';
     colresult = webread(colurl);
     rowresult = webread(rowurl);
     %To account for API overuse...
     if (size(colresult.rows,1)<1)
         d_trow = zeros(1,nloc);
         d_tcol = zeros(nloc,1);
-        
+
         R_trow = zeros(1,nloc);
         R_tcol = zeros(nloc,1);
-        
+
         disp('API Overuse');
         return
     else
         d_tcol(mink:limk)= arrayfun(@(x) colresult.rows(x).elements(1).distance(1).value,1:limk-mink+1);
         R_tcol(mink:limk)= arrayfun(@(x) colresult.rows(x).elements(1).duration(1).value,1:limk-mink+1);
-        
+
         d_trow(mink:limk)= arrayfun(@(x) rowresult.rows(1).elements(x).distance(1).value,1:limk-mink+1);
         R_trow(mink:limk)= arrayfun(@(x) rowresult.rows(1).elements(x).duration(1).value,1:limk-mink+1);
     end
@@ -51,7 +49,7 @@ for k = 1:ceil(length(locNames)/10)
     if (length(locNames) > 25)
         pause(1)
     end
-    
+
 end
 clear mink; clear minL; clear limk; clear limL;
 
@@ -70,13 +68,12 @@ dist_mat_rowcol.tcol = R_tcol;
 
 %% Coordinates
 %Note that 'locations{2}' contains the location-names as inputted by user
-APIkey2='AIzaSyDn-zSmuif-Mf8z16Pm1MLYp41zYcFoaX0';
+APIkey2=<PUT YOUR GOOGLE MAPS GEOCODING API KEY HERE>;
 pre_url2 = 'https://maps.googleapis.com/maps/api/geocode/json?';
 coordinates = cell(1,1);
 
 address = ['address=',strrep(locNames{index},' ','+')];
 url2 = [pre_url2,address,'&key=',APIkey2];
-%url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=nottingham&destinations=london|manchester|liverpool&key=AIzaSyDDKHV64CvECHE8wf_KXpLiWr2fM0XAnrU';
 webreturn = webread(url2);
 webreturn = webreturn.results.geometry;
 webreturn = webreturn.location;

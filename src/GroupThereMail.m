@@ -13,8 +13,8 @@ eventEmail = mailParam.eventEmail;
 eventHostOrg = mailParam.eventHostOrg;
 signature = mailParam.signature;
 
-knownAccounts = {'ifnotnowCarpooling@gmail.com','GroupThereLA@gmail.com'};
-knownPasswords = {'fAIPAC92','PoolPro92'};
+knownAccounts = {<YOUR EMAIL>};
+knownPasswords = {<YOUR PASSWORD};
 psswd = knownPasswords(find(strcmp(sender,knownAccounts)));
 
 if (liveVariable == 0)
@@ -37,7 +37,7 @@ for k = 2:length(params.Name)
         addressEmailTable =[];
     else
         placeInLine = find(instructions{plan}==k,1);
-        
+
         command= [params.Name{instructions{plan}(1)}];
         if length(instructions{plan})==1
             times = round(dists(instructions{plan}(1),1).*60);
@@ -62,17 +62,17 @@ for k = 2:length(params.Name)
             else
                 command = [command,  'You (', params.Name{instructions{plan}(1)}, ') need to leave by ',departures{plan}{1},'.'];
             end
-            
+
             command = sprintf('%s\n',command);
             command = [command, 'You will (all) arrive at ', eventLocation,' at ', arrivals{plan}{1},'.'];
-            
+
         end
         addressEmailTable =[];
         for j = 1:length(instructions{plan})
             addressEmailTable = [addressEmailTable, sprintf('%s\n',[params.Name{instructions{plan}(j)},': ', params.Emails{instructions{plan}(j)}, ', ', params.Address{instructions{plan}(j)}])];
         end
     end
-    
+
     addressEmailTable = sprintf('%s\n',addressEmailTable);
     addressEmailTable = [addressEmailTable, sprintf('%s\n',['Event Location: ', eventLocation])];
     addressEmailTable = [addressEmailTable, sprintf('%s\n',['Event Address: ', params.Address{1}])];
@@ -80,20 +80,20 @@ for k = 2:length(params.Name)
     addressEmailTable = [addressEmailTable, sprintf('%s\n',['Email: ', eventEmail,' for more information.'])];
     addressEmailTable = sprintf('%s\n',addressEmailTable);
     addressEmailTable = [addressEmailTable, sprintf('%s\n',['To request a different carpool, please email ', sender, ' for more information.'])];
-    
-    
+
+
     message = sprintf('%s\n\n',['Hi ',params.Name{k},',']);
     message = [message,sprintf('%s\n\n','Here is your personalized travel plan:')];
     message = [message,sprintf('%s\n\n',command)];
-    
+
     message = [message, sprintf('%s\n\n',addressEmailTable)];
-    
+
     message = [message,sprintf('%s\n\n','Sincerely,'),eventHostOrg];
-    
+
     message = sprintf('%s\n',message);
-    
+
     message = [sprintf('%s\n',message), signature];
-    
+
     matlabmail(params.Emails{k}, message, subject, sender, psswd);
     times = [];
 end

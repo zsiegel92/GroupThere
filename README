@@ -1,0 +1,34 @@
+In distmat_onerow_onecol.m:
+
+1. Paste your Google Maps Distance Matrix API Key where you see <PUT YOUR DISTANCE MATRIX API KEY HERE>;
+
+2. Paste your Google Maps Geocoding API Key where you see <PUT YOUR GOOGLE MAPS GEOCODING API KEY HERE>.
+
+In Generate_Dist_Mat.m:
+
+3. Paste your Google Maps Distance Matrix API Key where you see <PUT YOUR DISTANCE MATRIX API KEY HERE>;
+
+4. Paste your Google Maps Geocoding API Key where you see <PUT YOUR GOOGLE MAPS GEOCODING API KEY HERE>.
+
+In GroupThere.m:
+
+5. Fill in the following parameters:
+mailParam.sender = <YOUR EMAIL>;
+mailParam.eventDate = <EVENT DATE>;
+mailParam.eventTime = <EVENT TIME>;
+mailParam.eventName = <YOUR EVENT NAME>;
+mailParam.eventLocation = <EVENT LOCATION NAME>;
+mailParam.eventContact = <EVENT CONTACT PHONE NUMBER>;
+mailParam.eventEmail = <EMAIL CONTACT FOR EVENT>;
+mailParam.eventHostOrg = <HOST ORG>; %After "Sincerely,"
+mailParam.signature = <SOMETHING GOOFY>;
+
+IN GroupThereMail.m:
+
+6. Fille in your email and password:
+knownAccounts = {<YOUR EMAIL>};
+knownPasswords = {<YOUR PASSWORD};
+
+TO RUN:
+
+GroupThere(<YOUR FILENAME>)

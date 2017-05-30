@@ -9,16 +9,15 @@ function [solution,params,mailParam] = GroupThere(filename)
 
 
 %% Initializing parameters
-mailParam.sender = 'ifnotnowCarpooling@gmail.com';
-% mailParam.sender = 'GroupThereLA@gmail.com';
-mailParam.eventDate = '4/12/2017';
-mailParam.eventTime = '7:30 PM';
-mailParam.eventName = 'Hive Meeting';
-mailParam.eventLocation = [['David'],sprintf('\'''),['s Apartment']];
-mailParam.eventContact = '(914) 400 - 3675';
-mailParam.eventEmail = 'ifnotnow-la-swarm@googlegroups.com';
-mailParam.eventHostOrg = 'IfNotNow LA Hivekeepers'; %After "Sincerely,"
-mailParam.signature = 'Which car are you in? Which car are you iinn, my people?';
+mailParam.sender = <YOUR EMAIL>;
+mailParam.eventDate = <EVENT DATE>;
+mailParam.eventTime = <EVENT TIME>;
+mailParam.eventName = <YOUR EVENT NAME>;
+mailParam.eventLocation = <EVENT LOCATION NAME>;
+mailParam.eventContact = <EVENT CONTACT PHONE NUMBER>;
+mailParam.eventEmail = <EMAIL CONTACT FOR EVENT>;
+mailParam.eventHostOrg = <HOST ORG>; %After "Sincerely,"
+mailParam.signature = <SOMETHING GOOFY>;
 
 [~,~,~,eventhour,eventminute,~] = datevec(mailParam.eventTime);
 
@@ -90,7 +89,7 @@ for i = 1:size(solution.instructions,1)
         arr = 0;
         deps = arr - triu(ones(length(solution.instructions{i})))*distind';
     end
-    
+
     % Give commands
     command= [params.Name{solution.instructions{i}(1)}];
     j=2;
@@ -106,7 +105,7 @@ for i = 1:size(solution.instructions,1)
     disp(command)
     solution.departures{i} = deps;
     solution.arrivals{i} = arr;
-    
+
     solution.departures{i} = arrayfun(@(x) char(datetime(0,0,0,eventhour,eventminute+round(x*60),0,'Format','hh:mm')),solution.departures{i},'UniformOutput',0);
     solution.arrivals{i} = arrayfun(@(x) char(datetime(0,0,0,eventhour,eventminute+round(x*60),0,'Format','hh:mm')),solution.arrivals{i},'UniformOutput',0);
     disp(['First departure: ', char(datetime(0,0,0,eventhour,eventminute+round(deps(1)*60),0,'Format','hh:mm'))]);
